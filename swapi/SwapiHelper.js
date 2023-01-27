@@ -46,6 +46,8 @@ export default class SwapiHelper {
         `<li>${film.title}</li>`).join("");
         element.addEventListener("click", (e) => {
             console.log(e.target);
+            this.setActive(element, e.target);
+            callback(e.target.innerText);
         });
     }
 
@@ -60,11 +62,23 @@ export default class SwapiHelper {
             this.outputElement.querySelector(".film-name").innerHTML = film.title;
 
             this.outputElement.querySelector(".crawl").innerText = film.opening_crawl;
+            const planets = await this.getListDetails(film.planets);
+            const starships = await this.getListDetails(film.starships);
+            this.renderList(planets, this.planetTemplate, ".film-planets");
+            this.renderList(starships, this.starshipTemplate, ".film-starships");
         }
         catch (err) {
             console.log(err);
         }
 
+    }
+
+    renderList(list, template, outputId){
+        const element = document.querySelector(outputId);
+        element.innerHTML = "";
+        const htmlString = list.map((item) =>
+            template(item));
+        element.innerHTML = htmlString.join("");
     }
 
     pageTemplate() {
@@ -77,6 +91,43 @@ export default class SwapiHelper {
         <section>
             <h3>Starships</h3>
             <ul class="detail-list film-starships"></ul>
-        </section>`
+        </section>`;
     }
+
+    setActive(parent, target) {
+        const children = [...parent.childNodes];
+        children.forEach((node) => {
+            node.classList.remove("active");
+        })
+        target.classList.add("active");
+    }
+
+    async getListDetails(list) {
+        const details = await Promise.all(list.map((url)=>
+            this.makeRequest(url)));
+        console.log(details);
+        return details;
+    }
+
+    planetTemplate(planet){
+        return `<li>
+            <h4 class="planet-name">${planet.name}</h4>
+            <p>Climate: ${planet.climate}</p>
+            <p>Terrain: ${planet.terrain}</p>
+            <p>Year: ${planet.orbital_period}</p>
+            <p>Day: ${planet.rotation_period}</p>
+            <p>Population: ${planet.population}</p>        
+        </li>`;
+    }
+
+    starshipTemplate(starship){
+        return `<li>
+            <h4 class="starship-name">${starship.name}</h4>
+            <p>Model: ${starship.model}</p>
+            <p>Manufacturer: ${starship.manufacturer}</p>
+            <p>Cost in Credits: ${starship.cost_in_credits}</p>
+            <p>Passengers: ${starship.passengers}</p>
+        </li>`
+    }
+
 }
