@@ -1,0 +1,11 @@
+#output {
+    display: flex;
+    flex-wrap: wrap;
+    list-style-type: none;
+}
+
+li {
+    max-width: 300px;
+    max-height: 300px;
+    overflow: hidden;
+}
