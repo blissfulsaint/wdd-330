@@ -40,7 +40,7 @@ export default class NatapiHelper {
         let htmlString =[];
         for (let i = 0; i <= 20; i++){
             htmlString.push(`<li>
-                <img src=${data.results[i].observation.taxon.default_photo.medium_url}>
+                <img src=${data.results[i].observation.taxon.default_photo.url}>
                 </li>`);
         }
         element.innerHTML = htmlString.join("");
