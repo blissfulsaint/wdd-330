@@ -1,3 +1,7 @@
+h1, p {
+    font-family:'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
+
 #output {
     display: flex;
     flex-wrap: wrap;
@@ -8,4 +12,19 @@ li {
     max-width: 300px;
     max-height: 300px;
     overflow: hidden;
+}
+
+p {
+    background-color: brown;
+    max-width: fit-content;
+    padding: 10px;
+    color: white;
+    border-radius: 10px;
+    transition: .2s;
+}
+
+p:hover {
+    cursor: pointer;
+    background-color: antiquewhite;
+    color: brown;
 }
